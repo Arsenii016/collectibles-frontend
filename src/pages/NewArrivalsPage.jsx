@@ -1,6 +1,6 @@
 import ProductCard from "../components/ProductCard";
 
-function NewArrivalsPage({ products }) {
+function NewArrivalsPage({ products, addToCart }) {
   return (
     <main className="category-page">
       <section className="category-hero">
@@ -10,11 +10,19 @@ function NewArrivalsPage({ products }) {
       </section>
 
       <section className="products-section category-products">
-        <div className="grid">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {products.length > 0 ? (
+          <div className="grid">
+            {products.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                addToCart={addToCart}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="empty-text">Пока нет новых товаров.</p>
+        )}
       </section>
     </main>
   );

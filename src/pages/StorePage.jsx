@@ -1,6 +1,6 @@
 import ProductCard from "../components/ProductCard";
 
-function StorePage({ products, activeCategory, openCategory }) {
+function StorePage({ products, activeCategory, openCategory, addToCart }) {
   const categories = [
     "All items",
     "Sneakers",
@@ -41,7 +41,11 @@ function StorePage({ products, activeCategory, openCategory }) {
         {filteredProducts.length > 0 ? (
           <div className="grid">
             {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                addToCart={addToCart}
+              />
             ))}
           </div>
         ) : (

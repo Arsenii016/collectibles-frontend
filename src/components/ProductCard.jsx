@@ -1,4 +1,4 @@
-function ProductCard({ product }) {
+function ProductCard({ product, addToCart }) {
   return (
     <div className="card">
       <div className="card-image-wrap">
@@ -14,6 +14,10 @@ function ProductCard({ product }) {
         <p className="description">{product.description}</p>
         <p className="price">{product.price} ₽</p>
         <p className="seller">Продавец: {product.seller || "Магазин"}</p>
+
+        <button className="add-cart-button" onClick={() => addToCart(product)}>
+          Add to cart
+        </button>
       </div>
     </div>
   );

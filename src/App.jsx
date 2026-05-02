@@ -3,6 +3,7 @@ import "./App.css";
 
 import AuthModal from "./components/AuthModal";
 import ProductFormModal from "./components/ProductFormModal";
+import CartModal from "./components/CartModal";
 import StorePage from "./pages/StorePage";
 import CollectionsPage from "./pages/CollectionsPage";
 import AboutPage from "./pages/AboutPage";
@@ -12,6 +13,9 @@ const API_URL = "https://collectibles-backend-hcey.onrender.com";
 
 function App() {
   const [products, setProducts] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isProductFormOpen, setIsProductFormOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
@@ -40,7 +44,21 @@ function App() {
 
   useEffect(() => {
     loadProducts();
+
+    const savedUser = localStorage.getItem("currentUser");
+    if (savedUser) {
+      setCurrentUser(JSON.parse(savedUser));
+    }
+
+    const savedCart = localStorage.getItem("cartItems");
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   function loadProducts() {
     fetch(`${API_URL}/products`)
@@ -59,6 +77,56 @@ function App() {
     setActivePage("store");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+
+  function addToCart(product) {
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item.id === product.id);
+
+      if (existingItem) {
+        return prevItems.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+
+      return [...prevItems, { ...product, quantity: 1 }];
+    });
+  }
+
+  function removeFromCart(productId) {
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => item.id !== productId)
+    );
+  }
+
+  function increaseQuantity(productId) {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === productId
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  }
+
+  function decreaseQuantity(productId) {
+    setCartItems((prevItems) =>
+      prevItems
+        .map((item) =>
+          item.id === productId
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  }
+
+  function clearCart() {
+    setCartItems([]);
+  }
+
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   function handleLoginChange(event) {
     const { name, value } = event.target;
@@ -96,6 +164,8 @@ function App() {
       .then((data) => {
         if (data.user) {
           setCurrentUser(data.user);
+          localStorage.setItem("currentUser", JSON.stringify(data.user));
+
           setIsAuthOpen(false);
           setLoginData({ email: "", password: "" });
         } else {
@@ -166,6 +236,7 @@ function App() {
 
   function logout() {
     setCurrentUser(null);
+    localStorage.removeItem("currentUser");
   }
 
   function renderPage() {
@@ -174,7 +245,7 @@ function App() {
     }
 
     if (activePage === "new") {
-      return <NewArrivalsPage products={products} />;
+      return <NewArrivalsPage products={products} addToCart={addToCart} />;
     }
 
     if (activePage === "about") {
@@ -211,6 +282,7 @@ function App() {
           products={products}
           activeCategory={activeCategory}
           openCategory={openCategory}
+          addToCart={addToCart}
         />
       </>
     );
@@ -242,6 +314,11 @@ function App() {
         </nav>
 
         <div className="nav-actions">
+          <button className="cart-button" onClick={() => setIsCartOpen(true)}>
+            Cart
+            {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+          </button>
+
           {currentUser ? (
             <>
               <span className="user-chip">{currentUser.username}</span>
@@ -287,6 +364,16 @@ function App() {
         handleProductChange={handleProductChange}
         handleFileChange={handleFileChange}
         handleProductSubmit={handleProductSubmit}
+      />
+
+      <CartModal
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        cartItems={cartItems}
+        increaseQuantity={increaseQuantity}
+        decreaseQuantity={decreaseQuantity}
+        removeFromCart={removeFromCart}
+        clearCart={clearCart}
       />
 
       {renderPage()}
