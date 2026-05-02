@@ -8,6 +8,8 @@ import CollectionsPage from "./pages/CollectionsPage";
 import AboutPage from "./pages/AboutPage";
 import NewArrivalsPage from "./pages/NewArrivalsPage";
 
+const API_URL = "https://collectibles-backend-hcey.onrender.com";
+
 function App() {
   const [products, setProducts] = useState([]);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -41,7 +43,7 @@ function App() {
   }, []);
 
   function loadProducts() {
-    fetch("http://127.0.0.1:5000/products")
+    fetch(`${API_URL}/products`)
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.log(err));
@@ -83,7 +85,7 @@ function App() {
   function handleLogin(event) {
     event.preventDefault();
 
-    fetch("http://127.0.0.1:5000/login", {
+    fetch(`${API_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -106,7 +108,7 @@ function App() {
   function handleRegister(event) {
     event.preventDefault();
 
-    fetch("http://127.0.0.1:5000/register", {
+    fetch(`${API_URL}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -141,7 +143,7 @@ function App() {
       form.append("image", formData.image_file);
     }
 
-    fetch("http://127.0.0.1:5000/products", {
+    fetch(`${API_URL}/products`, {
       method: "POST",
       body: form,
     })
