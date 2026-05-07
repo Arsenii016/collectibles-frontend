@@ -10,6 +10,7 @@ import StorePage from "./pages/StorePage";
 import CollectionsPage from "./pages/CollectionsPage";
 import AboutPage from "./pages/AboutPage";
 import NewArrivalsPage from "./pages/NewArrivalsPage";
+import AdminOrdersPage from "./pages/AdminOrdersPage";
 
 const API_URL = "https://collectibles-backend-hcey.onrender.com";
 
@@ -368,6 +369,10 @@ function App() {
       );
     }
 
+    if (activePage === "orders" && isAdmin) {
+      return <AdminOrdersPage />;
+    }
+
     if (activePage === "about") {
       return <AboutPage />;
     }
@@ -461,12 +466,21 @@ function App() {
               <span className="user-chip">{currentUser.username}</span>
 
               {isAdmin && (
-                <button
-                  className="nav-button"
-                  onClick={() => setIsProductFormOpen(true)}
-                >
-                  Admin
-                </button>
+                <>
+                  <button
+                    className="nav-button"
+                    onClick={() => openPage("orders")}
+                  >
+                    Orders
+                  </button>
+
+                  <button
+                    className="nav-button"
+                    onClick={() => setIsProductFormOpen(true)}
+                  >
+                    Admin
+                  </button>
+                </>
               )}
 
               <button className="logout-button" onClick={logout}>
