@@ -7,6 +7,8 @@ function StorePage({
   addToCart,
   toggleFavorite,
   isFavorite,
+  openProduct,
+  hideHeader = false,
 }) {
   const categories = [
     "All items",
@@ -22,29 +24,31 @@ function StorePage({
       : products.filter((product) => product.category === activeCategory);
 
   return (
-    <main className="category-page">
-      <section className="category-hero">
-        <p className="section-kicker">Store</p>
-        <h2>{activeCategory}</h2>
-        <p>
-          Отобранные коллекционные позиции: лимитированная обувь, одежда,
-          аксессуары и редкие архивные вещи.
-        </p>
+    <main className={hideHeader ? "store-inner" : "category-page"}>
+      {!hideHeader && (
+        <section className="category-hero">
+          <p className="section-kicker">Store</p>
+          <h2>{activeCategory}</h2>
+          <p>
+            Отобранные коллекционные позиции: лимитированная обувь, одежда,
+            аксессуары и редкие архивные вещи.
+          </p>
 
-        <div className="category-tabs">
-          {categories.map((category) => (
-            <button
-              key={category}
-              className={activeCategory === category ? "active-category" : ""}
-              onClick={() => openCategory(category)}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-      </section>
+          <div className="category-tabs">
+            {categories.map((category) => (
+              <button
+                key={category}
+                className={activeCategory === category ? "active-category" : ""}
+                onClick={() => openCategory(category)}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
 
-      <section className="products-section category-products">
+      <section className={hideHeader ? "" : "products-section category-products"}>
         {filteredProducts.length > 0 ? (
           <div className="grid">
             {filteredProducts.map((product) => (
@@ -54,6 +58,7 @@ function StorePage({
                 addToCart={addToCart}
                 toggleFavorite={toggleFavorite}
                 isFavorite={isFavorite}
+                openProduct={openProduct}
               />
             ))}
           </div>

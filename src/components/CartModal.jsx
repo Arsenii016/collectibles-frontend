@@ -15,8 +15,8 @@ function CartModal({
   }, 0);
 
   return (
-    <div className="modal-overlay">
-      <div className="cart-modal">
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="cart-modal fixed-cart-modal" onClick={(e) => e.stopPropagation()}>
         <div className="form-header">
           <div>
             <p className="form-label">Shopping cart</p>
@@ -34,8 +34,12 @@ function CartModal({
           <>
             <div className="cart-list">
               {cartItems.map((item) => (
-                <div className="cart-item" key={item.id}>
-                  <img src={item.image_url} alt={item.name} />
+                <div className="cart-item fixed-cart-item" key={item.id}>
+                  <img
+                    className="cart-item-image"
+                    src={item.image_url}
+                    alt={item.name}
+                  />
 
                   <div className="cart-info">
                     <h3>{item.name}</h3>

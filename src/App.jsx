@@ -4,6 +4,8 @@ import "./App.css";
 import AuthModal from "./components/AuthModal";
 import ProductFormModal from "./components/ProductFormModal";
 import CartModal from "./components/CartModal";
+import ProductDetailsModal from "./components/ProductDetailsModal";
+
 import StorePage from "./pages/StorePage";
 import CollectionsPage from "./pages/CollectionsPage";
 import AboutPage from "./pages/AboutPage";
@@ -15,7 +17,10 @@ function App() {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [favoriteItems, setFavoriteItems] = useState([]);
+
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isProductOpen, setIsProductOpen] = useState(false);
 
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isProductFormOpen, setIsProductFormOpen] = useState(false);
@@ -79,6 +84,16 @@ function App() {
     setActiveCategory(categoryName);
     setActivePage("store");
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function openProduct(product) {
+    setSelectedProduct(product);
+    setIsProductOpen(true);
+  }
+
+  function closeProduct() {
+    setSelectedProduct(null);
+    setIsProductOpen(false);
   }
 
   function addToCart(product) {
@@ -279,7 +294,47 @@ function App() {
           addToCart={addToCart}
           toggleFavorite={toggleFavorite}
           isFavorite={isFavorite}
+          openProduct={openProduct}
         />
+      );
+    }
+
+    if (activePage === "favorites") {
+      return (
+        <main className="category-page">
+          <section className="category-hero">
+            <p className="section-kicker">Saved items</p>
+            <h2>Favorites</h2>
+            <p>Товары, которые ты добавил в избранное.</p>
+          </section>
+
+          <section className="products-section category-products">
+            {favoriteItems.length > 0 ? (
+              <div className="grid">
+                {favoriteItems.map((product) => (
+                  <div key={product.id}>
+                    <button
+                      className="hidden-card-trigger"
+                      onClick={() => openProduct(product)}
+                    />
+                  </div>
+                ))}
+                <StorePage
+                  products={favoriteItems}
+                  activeCategory="All items"
+                  openCategory={openCategory}
+                  addToCart={addToCart}
+                  toggleFavorite={toggleFavorite}
+                  isFavorite={isFavorite}
+                  openProduct={openProduct}
+                  hideHeader={true}
+                />
+              </div>
+            ) : (
+              <p className="empty-text">В избранном пока ничего нет.</p>
+            )}
+          </section>
+        </main>
       );
     }
 
@@ -320,6 +375,7 @@ function App() {
           addToCart={addToCart}
           toggleFavorite={toggleFavorite}
           isFavorite={isFavorite}
+          openProduct={openProduct}
         />
       </>
     );
@@ -351,7 +407,11 @@ function App() {
         </nav>
 
         <div className="nav-actions">
-          <button className="favorite-button" type="button">
+          <button
+            className="favorite-button"
+            type="button"
+            onClick={() => openPage("favorites")}
+          >
             Favorites
             {favoriteCount > 0 && (
               <span className="cart-count">{favoriteCount}</span>
@@ -419,6 +479,15 @@ function App() {
         removeFromCart={removeFromCart}
         clearCart={clearCart}
         checkout={checkout}
+      />
+
+      <ProductDetailsModal
+        product={selectedProduct}
+        isOpen={isProductOpen}
+        onClose={closeProduct}
+        addToCart={addToCart}
+        toggleFavorite={toggleFavorite}
+        isFavorite={isFavorite}
       />
 
       {renderPage()}
