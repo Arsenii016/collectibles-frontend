@@ -1194,3 +1194,284 @@ button {
   background: #007aff;
   color: #ffffff;
 }
+.store-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.search-box,
+.sort-box {
+  flex: 1;
+  padding: 14px 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.07);
+}
+
+.search-box span,
+.sort-box span {
+  display: block;
+  margin-bottom: 8px;
+  color: #007aff;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.search-box input,
+.sort-box select {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #0f172a;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.search-box input::placeholder {
+  color: #94a3b8;
+}
+
+@media (max-width: 720px) {
+  .store-toolbar {
+    flex-direction: column;
+  }
+}
+/* MOBILE FINAL RESPONSIVE */
+
+@media (max-width: 760px) {
+  .navbar {
+    height: auto;
+    min-height: 72px;
+    padding: 14px 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .main-nav {
+    order: 3;
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 4px;
+  }
+
+  .main-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .nav-actions {
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .favorite-button,
+  .cart-button,
+  .logout-button,
+  .nav-button {
+    height: 40px;
+    min-width: auto;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+
+  .user-chip {
+    display: none;
+  }
+
+  .promo-banner {
+    min-height: 520px;
+    padding: 70px 24px;
+  }
+
+  .promo-banner h1 {
+    font-size: 48px;
+    letter-spacing: -2px;
+  }
+
+  .promo-banner p {
+    font-size: 18px;
+  }
+
+  .category-page {
+    padding: 44px 0 70px;
+  }
+
+  .category-hero,
+  .products-section,
+  .info-page {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .category-hero h2,
+  .info-page h2 {
+    font-size: 38px;
+  }
+
+  .category-hero p,
+  .info-text {
+    font-size: 17px;
+  }
+
+  .category-tabs {
+    max-width: 100%;
+    overflow-x: auto;
+    display: flex;
+    border-radius: 22px;
+  }
+
+  .category-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-tabs button {
+    white-space: nowrap;
+    padding: 11px 16px;
+    font-size: 14px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .card {
+    border-radius: 24px;
+  }
+
+  .card-image-wrap {
+    height: 300px;
+  }
+
+  .card-buttons {
+    flex-direction: column;
+  }
+
+  .modal-overlay {
+    padding: 14px;
+    align-items: flex-start;
+  }
+
+  .cart-modal,
+  .product-form,
+  .auth-card {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 26px;
+    padding: 22px;
+  }
+
+  .cart-item {
+    grid-template-columns: 76px 1fr;
+    align-items: start;
+  }
+
+  .cart-item-image {
+    width: 76px;
+    height: 76px;
+  }
+
+  .quantity-controls,
+  .remove-cart-button {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .cart-footer,
+  .cart-footer-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .clear-cart-button,
+  .checkout-button {
+    width: 100%;
+  }
+
+  .product-modal {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 28px;
+  }
+
+  .product-modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-modal-image {
+    min-height: 330px;
+  }
+
+  .product-modal-content {
+    padding: 28px;
+  }
+
+  .product-modal-content h2 {
+    font-size: 34px;
+  }
+
+  .product-modal-price {
+    font-size: 32px;
+  }
+
+  .product-modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-favorite {
+    width: 100%;
+    height: 54px;
+  }
+
+  .orders-list {
+    gap: 18px;
+  }
+
+  .order-card {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .order-header {
+    flex-direction: column;
+  }
+
+  .order-item {
+    grid-template-columns: 72px 1fr;
+  }
+
+  .order-item img {
+    width: 72px;
+    height: 72px;
+  }
+
+  .order-status-controls {
+    gap: 8px;
+  }
+
+  .status-button {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .store-toolbar {
+    flex-direction: column;
+  }
+}

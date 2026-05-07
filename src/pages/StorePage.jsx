@@ -1,3 +1,4 @@
+import { useState } from "react";
 import ProductCard from "../components/ProductCard";
 
 function StorePage({
@@ -13,6 +14,9 @@ function StorePage({
   deleteProduct,
   hideHeader = false,
 }) {
+  const [searchValue, setSearchValue] = useState("");
+  const [sortType, setSortType] = useState("newest");
+
   const categories = [
     "All items",
     "Sneakers",
@@ -21,10 +25,31 @@ function StorePage({
     "Vintage toys",
   ];
 
-  const filteredProducts =
-    activeCategory === "All items"
-      ? products
-      : products.filter((product) => product.category === activeCategory);
+  const filteredProducts = products
+    .filter((product) => {
+      if (activeCategory === "All items") return true;
+      return product.category === activeCategory;
+    })
+    .filter((product) => {
+      const query = searchValue.toLowerCase();
+
+      return (
+        product.name.toLowerCase().includes(query) ||
+        product.description.toLowerCase().includes(query) ||
+        product.category.toLowerCase().includes(query)
+      );
+    })
+    .sort((a, b) => {
+      if (sortType === "price-low") {
+        return Number(a.price) - Number(b.price);
+      }
+
+      if (sortType === "price-high") {
+        return Number(b.price) - Number(a.price);
+      }
+
+      return b.id - a.id;
+    });
 
   return (
     <main className={hideHeader ? "store-inner" : "category-page"}>
@@ -52,6 +77,30 @@ function StorePage({
       )}
 
       <section className={hideHeader ? "" : "products-section category-products"}>
+        <div className="store-toolbar">
+          <div className="search-box">
+            <span>Search</span>
+            <input
+              type="text"
+              placeholder="Nike, jacket, sneakers..."
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
+            />
+          </div>
+
+          <div className="sort-box">
+            <span>Sort by</span>
+            <select
+              value={sortType}
+              onChange={(event) => setSortType(event.target.value)}
+            >
+              <option value="newest">Newest first</option>
+              <option value="price-low">Price: low to high</option>
+              <option value="price-high">Price: high to low</option>
+            </select>
+          </div>
+        </div>
+
         {filteredProducts.length > 0 ? (
           <div className="grid">
             {filteredProducts.map((product) => (
@@ -69,7 +118,7 @@ function StorePage({
             ))}
           </div>
         ) : (
-          <p className="empty-text">В этой категории пока нет товаров.</p>
+          <p className="empty-text">Ничего не найдено.</p>
         )}
       </section>
     </main>
