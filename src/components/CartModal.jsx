@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 function CartModal({
   isOpen,
   onClose,
@@ -6,17 +8,56 @@ function CartModal({
   decreaseQuantity,
   removeFromCart,
   clearCart,
-  checkout,
+  createOrder,
 }) {
+  const [orderData, setOrderData] = useState({
+    customer_name: "",
+    phone: "",
+    address: "",
+    payment_method: "Card",
+    comment: "",
+  });
+
   if (!isOpen) return null;
 
   const total = cartItems.reduce((sum, item) => {
     return sum + Number(item.price) * item.quantity;
   }, 0);
 
+  function handleChange(event) {
+    const { name, value } = event.target;
+
+    setOrderData({
+      ...orderData,
+      [name]: value,
+    });
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    if (cartItems.length === 0) {
+      alert("Корзина пустая");
+      return;
+    }
+
+    createOrder(orderData);
+
+    setOrderData({
+      customer_name: "",
+      phone: "",
+      address: "",
+      payment_method: "Card",
+      comment: "",
+    });
+  }
+
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="cart-modal fixed-cart-modal" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="cart-modal fixed-cart-modal"
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className="form-header">
           <div>
             <p className="form-label">Shopping cart</p>
@@ -63,9 +104,52 @@ function CartModal({
               ))}
             </div>
 
-            <div className="checkout-box">
+            <form className="checkout-form" onSubmit={handleSubmit}>
               <p className="section-kicker">Checkout</p>
               <h3>Order details</h3>
+
+              <input
+                type="text"
+                name="customer_name"
+                placeholder="Ваше имя"
+                value={orderData.customer_name}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                type="text"
+                name="phone"
+                placeholder="Телефон или Telegram"
+                value={orderData.phone}
+                onChange={handleChange}
+                required
+              />
+
+              <textarea
+                name="address"
+                placeholder="Адрес доставки"
+                value={orderData.address}
+                onChange={handleChange}
+                required
+              />
+
+              <select
+                name="payment_method"
+                value={orderData.payment_method}
+                onChange={handleChange}
+              >
+                <option value="Card">Card — fake payment</option>
+                <option value="Crypto">Crypto — fake payment</option>
+                <option value="Cash on delivery">Cash on delivery</option>
+              </select>
+
+              <textarea
+                name="comment"
+                placeholder="Комментарий к заказу"
+                value={orderData.comment}
+                onChange={handleChange}
+              />
 
               <div className="checkout-row">
                 <span>Items</span>
@@ -76,23 +160,21 @@ function CartModal({
                 <span>Total</span>
                 <strong>{total} ₽</strong>
               </div>
-            </div>
-
-            <div className="cart-footer">
-              <div>
-                <p>Total</p>
-                <h3>{total} ₽</h3>
-              </div>
 
               <div className="cart-footer-actions">
-                <button className="clear-cart-button" onClick={clearCart}>
+                <button
+                  className="clear-cart-button"
+                  type="button"
+                  onClick={clearCart}
+                >
                   Clear
                 </button>
-                <button className="checkout-button" onClick={checkout}>
-                  Checkout
+
+                <button className="checkout-button" type="submit">
+                  Place order
                 </button>
               </div>
-            </div>
+            </form>
           </>
         )}
       </div>

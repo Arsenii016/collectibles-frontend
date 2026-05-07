@@ -160,12 +160,38 @@ function App() {
     setCartItems([]);
   }
 
-  function checkout() {
-    if (cartItems.length === 0) return;
+  function createOrder(orderData) {
+    const total = cartItems.reduce((sum, item) => {
+      return sum + Number(item.price) * item.quantity;
+    }, 0);
 
-    alert("Заказ оформлен 🚀 Спасибо за покупку!");
-    setCartItems([]);
-    setIsCartOpen(false);
+    const payload = {
+      ...orderData,
+      total,
+      items: cartItems,
+    };
+
+    fetch(`${API_URL}/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.order_id) {
+          alert(`Заказ №${data.order_id} оформлен 🚀`);
+          setCartItems([]);
+          setIsCartOpen(false);
+        } else {
+          alert(data.error || "Ошибка оформления заказа");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Ошибка соединения с сервером");
+      });
   }
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -301,40 +327,15 @@ function App() {
 
     if (activePage === "favorites") {
       return (
-        <main className="category-page">
-          <section className="category-hero">
-            <p className="section-kicker">Saved items</p>
-            <h2>Favorites</h2>
-            <p>Товары, которые ты добавил в избранное.</p>
-          </section>
-
-          <section className="products-section category-products">
-            {favoriteItems.length > 0 ? (
-              <div className="grid">
-                {favoriteItems.map((product) => (
-                  <div key={product.id}>
-                    <button
-                      className="hidden-card-trigger"
-                      onClick={() => openProduct(product)}
-                    />
-                  </div>
-                ))}
-                <StorePage
-                  products={favoriteItems}
-                  activeCategory="All items"
-                  openCategory={openCategory}
-                  addToCart={addToCart}
-                  toggleFavorite={toggleFavorite}
-                  isFavorite={isFavorite}
-                  openProduct={openProduct}
-                  hideHeader={true}
-                />
-              </div>
-            ) : (
-              <p className="empty-text">В избранном пока ничего нет.</p>
-            )}
-          </section>
-        </main>
+        <StorePage
+          products={favoriteItems}
+          activeCategory="All items"
+          openCategory={openCategory}
+          addToCart={addToCart}
+          toggleFavorite={toggleFavorite}
+          isFavorite={isFavorite}
+          openProduct={openProduct}
+        />
       );
     }
 
@@ -478,7 +479,7 @@ function App() {
         decreaseQuantity={decreaseQuantity}
         removeFromCart={removeFromCart}
         clearCart={clearCart}
-        checkout={checkout}
+        createOrder={createOrder}
       />
 
       <ProductDetailsModal
