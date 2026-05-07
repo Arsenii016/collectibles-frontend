@@ -1,6 +1,11 @@
 import ProductCard from "../components/ProductCard";
 
-function NewArrivalsPage({ products, addToCart }) {
+function NewArrivalsPage({
+  products,
+  addToCart,
+  toggleFavorite,
+  isFavorite,
+}) {
   return (
     <main className="category-page">
       <section className="category-hero">
@@ -17,6 +22,8 @@ function NewArrivalsPage({ products, addToCart }) {
                 key={product.id}
                 product={product}
                 addToCart={addToCart}
+                toggleFavorite={toggleFavorite}
+                isFavorite={isFavorite}
               />
             ))}
           </div>

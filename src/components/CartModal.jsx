@@ -6,6 +6,7 @@ function CartModal({
   decreaseQuantity,
   removeFromCart,
   clearCart,
+  checkout,
 }) {
   if (!isOpen) return null;
 
@@ -58,6 +59,21 @@ function CartModal({
               ))}
             </div>
 
+            <div className="checkout-box">
+              <p className="section-kicker">Checkout</p>
+              <h3>Order details</h3>
+
+              <div className="checkout-row">
+                <span>Items</span>
+                <strong>{cartItems.length}</strong>
+              </div>
+
+              <div className="checkout-row">
+                <span>Total</span>
+                <strong>{total} ₽</strong>
+              </div>
+            </div>
+
             <div className="cart-footer">
               <div>
                 <p>Total</p>
@@ -68,7 +84,7 @@ function CartModal({
                 <button className="clear-cart-button" onClick={clearCart}>
                   Clear
                 </button>
-                <button className="checkout-button">
+                <button className="checkout-button" onClick={checkout}>
                   Checkout
                 </button>
               </div>

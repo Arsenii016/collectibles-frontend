@@ -1,6 +1,13 @@
 import ProductCard from "../components/ProductCard";
 
-function StorePage({ products, activeCategory, openCategory, addToCart }) {
+function StorePage({
+  products,
+  activeCategory,
+  openCategory,
+  addToCart,
+  toggleFavorite,
+  isFavorite,
+}) {
   const categories = [
     "All items",
     "Sneakers",
@@ -45,6 +52,8 @@ function StorePage({ products, activeCategory, openCategory, addToCart }) {
                 key={product.id}
                 product={product}
                 addToCart={addToCart}
+                toggleFavorite={toggleFavorite}
+                isFavorite={isFavorite}
               />
             ))}
           </div>

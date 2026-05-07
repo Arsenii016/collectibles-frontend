@@ -1,7 +1,15 @@
-function ProductCard({ product, addToCart }) {
+function ProductCard({ product, addToCart, toggleFavorite, isFavorite }) {
   return (
     <div className="card">
       <div className="card-image-wrap">
+        <button
+          className={isFavorite(product.id) ? "favorite-card-button active" : "favorite-card-button"}
+          type="button"
+          onClick={() => toggleFavorite(product)}
+        >
+          ♥
+        </button>
+
         <img src={product.image_url} alt={product.name} />
       </div>
 

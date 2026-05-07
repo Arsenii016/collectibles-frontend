@@ -14,6 +14,7 @@ const API_URL = "https://collectibles-backend-hcey.onrender.com";
 function App() {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [favoriteItems, setFavoriteItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -46,19 +47,21 @@ function App() {
     loadProducts();
 
     const savedUser = localStorage.getItem("currentUser");
-    if (savedUser) {
-      setCurrentUser(JSON.parse(savedUser));
-    }
-
     const savedCart = localStorage.getItem("cartItems");
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
-    }
+    const savedFavorites = localStorage.getItem("favoriteItems");
+
+    if (savedUser) setCurrentUser(JSON.parse(savedUser));
+    if (savedCart) setCartItems(JSON.parse(savedCart));
+    if (savedFavorites) setFavoriteItems(JSON.parse(savedFavorites));
   }, []);
 
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
+
+  useEffect(() => {
+    localStorage.setItem("favoriteItems", JSON.stringify(favoriteItems));
+  }, [favoriteItems]);
 
   function loadProducts() {
     fetch(`${API_URL}/products`)
@@ -94,6 +97,22 @@ function App() {
     });
   }
 
+  function toggleFavorite(product) {
+    setFavoriteItems((prevItems) => {
+      const exists = prevItems.some((item) => item.id === product.id);
+
+      if (exists) {
+        return prevItems.filter((item) => item.id !== product.id);
+      }
+
+      return [...prevItems, product];
+    });
+  }
+
+  function isFavorite(productId) {
+    return favoriteItems.some((item) => item.id === productId);
+  }
+
   function removeFromCart(productId) {
     setCartItems((prevItems) =>
       prevItems.filter((item) => item.id !== productId)
@@ -126,7 +145,16 @@ function App() {
     setCartItems([]);
   }
 
+  function checkout() {
+    if (cartItems.length === 0) return;
+
+    alert("Заказ оформлен 🚀 Спасибо за покупку!");
+    setCartItems([]);
+    setIsCartOpen(false);
+  }
+
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const favoriteCount = favoriteItems.length;
 
   function handleLoginChange(event) {
     const { name, value } = event.target;
@@ -245,7 +273,14 @@ function App() {
     }
 
     if (activePage === "new") {
-      return <NewArrivalsPage products={products} addToCart={addToCart} />;
+      return (
+        <NewArrivalsPage
+          products={products}
+          addToCart={addToCart}
+          toggleFavorite={toggleFavorite}
+          isFavorite={isFavorite}
+        />
+      );
     }
 
     if (activePage === "about") {
@@ -283,6 +318,8 @@ function App() {
           activeCategory={activeCategory}
           openCategory={openCategory}
           addToCart={addToCart}
+          toggleFavorite={toggleFavorite}
+          isFavorite={isFavorite}
         />
       </>
     );
@@ -314,6 +351,13 @@ function App() {
         </nav>
 
         <div className="nav-actions">
+          <button className="favorite-button" type="button">
+            Favorites
+            {favoriteCount > 0 && (
+              <span className="cart-count">{favoriteCount}</span>
+            )}
+          </button>
+
           <button className="cart-button" onClick={() => setIsCartOpen(true)}>
             Cart
             {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
@@ -374,6 +418,7 @@ function App() {
         decreaseQuantity={decreaseQuantity}
         removeFromCart={removeFromCart}
         clearCart={clearCart}
+        checkout={checkout}
       />
 
       {renderPage()}
