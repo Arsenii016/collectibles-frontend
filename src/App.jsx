@@ -128,6 +128,29 @@ function App() {
     return favoriteItems.some((item) => item.id === productId);
   }
 
+  function deleteProduct(productId) {
+    const confirmed = window.confirm("Удалить этот товар?");
+
+    if (!confirmed) return;
+
+    fetch(`${API_URL}/products/${productId}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then(() => {
+        loadProducts();
+
+        setFavoriteItems((prevItems) =>
+          prevItems.filter((item) => item.id !== productId)
+        );
+
+        setCartItems((prevItems) =>
+          prevItems.filter((item) => item.id !== productId)
+        );
+      })
+      .catch((err) => console.log(err));
+  }
+
   function removeFromCart(productId) {
     setCartItems((prevItems) =>
       prevItems.filter((item) => item.id !== productId)
@@ -321,6 +344,9 @@ function App() {
           toggleFavorite={toggleFavorite}
           isFavorite={isFavorite}
           openProduct={openProduct}
+          currentUser={currentUser}
+          isAdmin={isAdmin}
+          deleteProduct={deleteProduct}
         />
       );
     }
@@ -335,6 +361,9 @@ function App() {
           toggleFavorite={toggleFavorite}
           isFavorite={isFavorite}
           openProduct={openProduct}
+          currentUser={currentUser}
+          isAdmin={isAdmin}
+          deleteProduct={deleteProduct}
         />
       );
     }
@@ -377,6 +406,9 @@ function App() {
           toggleFavorite={toggleFavorite}
           isFavorite={isFavorite}
           openProduct={openProduct}
+          currentUser={currentUser}
+          isAdmin={isAdmin}
+          deleteProduct={deleteProduct}
         />
       </>
     );

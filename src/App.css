@@ -1031,3 +1031,20 @@ button {
   border-color: #007aff;
   box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
 }
+.delete-product-button {
+  width: 100%;
+  margin-top: 14px;
+  border: none;
+  border-radius: 999px;
+  padding: 13px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.delete-product-button:hover {
+  background: #ef4444;
+  color: white;
+}

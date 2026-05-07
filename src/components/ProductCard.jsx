@@ -4,6 +4,9 @@ function ProductCard({
   toggleFavorite,
   isFavorite,
   openProduct,
+  currentUser,
+  isAdmin,
+  deleteProduct,
 }) {
   return (
     <div className="card">
@@ -31,7 +34,9 @@ function ProductCard({
 
       <div className="card-content">
         <div className="card-top">
-          <p className="item-label">{product.category || "New"}</p>
+          <p className="item-label">
+            {product.category || "New"}
+          </p>
         </div>
 
         <h3>{product.name}</h3>
@@ -40,7 +45,9 @@ function ProductCard({
           {product.description}
         </p>
 
-        <p className="price">{product.price} ₽</p>
+        <p className="price">
+          {product.price} ₽
+        </p>
 
         <p className="seller">
           Продавец: {product.seller || "Магазин"}
@@ -61,6 +68,15 @@ function ProductCard({
             Add to cart
           </button>
         </div>
+
+        {currentUser && isAdmin && (
+          <button
+            className="delete-product-button"
+            onClick={() => deleteProduct(product.id)}
+          >
+            Delete product
+          </button>
+        )}
       </div>
     </div>
   );

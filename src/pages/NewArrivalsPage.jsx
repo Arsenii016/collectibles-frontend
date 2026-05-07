@@ -6,6 +6,9 @@ function NewArrivalsPage({
   toggleFavorite,
   isFavorite,
   openProduct,
+  currentUser,
+  isAdmin,
+  deleteProduct,
 }) {
   return (
     <main className="category-page">
@@ -14,10 +17,7 @@ function NewArrivalsPage({
 
         <h2>New Arrivals</h2>
 
-        <p>
-          Последние добавленные позиции
-          в каталоге магазина.
-        </p>
+        <p>Последние добавленные позиции в каталоге магазина.</p>
       </section>
 
       <section className="products-section category-products">
@@ -31,13 +31,14 @@ function NewArrivalsPage({
                 toggleFavorite={toggleFavorite}
                 isFavorite={isFavorite}
                 openProduct={openProduct}
+                currentUser={currentUser}
+                isAdmin={isAdmin}
+                deleteProduct={deleteProduct}
               />
             ))}
           </div>
         ) : (
-          <p className="empty-text">
-            Пока нет новых товаров.
-          </p>
+          <p className="empty-text">Пока нет новых товаров.</p>
         )}
       </section>
     </main>

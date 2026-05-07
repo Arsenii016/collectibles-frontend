@@ -8,6 +8,9 @@ function StorePage({
   toggleFavorite,
   isFavorite,
   openProduct,
+  currentUser,
+  isAdmin,
+  deleteProduct,
   hideHeader = false,
 }) {
   const categories = [
@@ -59,6 +62,9 @@ function StorePage({
                 toggleFavorite={toggleFavorite}
                 isFavorite={isFavorite}
                 openProduct={openProduct}
+                currentUser={currentUser}
+                isAdmin={isAdmin}
+                deleteProduct={deleteProduct}
               />
             ))}
           </div>
