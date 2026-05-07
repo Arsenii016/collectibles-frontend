@@ -11,6 +11,7 @@ import CollectionsPage from "./pages/CollectionsPage";
 import AboutPage from "./pages/AboutPage";
 import NewArrivalsPage from "./pages/NewArrivalsPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
+import MyOrdersPage from "./pages/MyOrdersPage";
 
 const API_URL = "https://collectibles-backend-hcey.onrender.com";
 
@@ -185,12 +186,19 @@ function App() {
   }
 
   function createOrder(orderData) {
+    if (!currentUser) {
+      alert("Войдите в аккаунт, чтобы оформить заказ");
+      setIsAuthOpen(true);
+      return;
+    }
+
     const total = cartItems.reduce((sum, item) => {
       return sum + Number(item.price) * item.quantity;
     }, 0);
 
     const payload = {
       ...orderData,
+      user_id: currentUser.id,
       total,
       items: cartItems,
     };
@@ -208,6 +216,7 @@ function App() {
           alert(`Заказ №${data.order_id} оформлен 🚀`);
           setCartItems([]);
           setIsCartOpen(false);
+          setActivePage("my-orders");
         } else {
           alert(data.error || "Ошибка оформления заказа");
         }
@@ -280,7 +289,7 @@ function App() {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.message) {
+        if (data.message || data.user) {
           alert("Пользователь создан. Теперь войдите.");
           setAuthMode("login");
           setRegisterData({ username: "", email: "", password: "" });
@@ -330,6 +339,7 @@ function App() {
   function logout() {
     setCurrentUser(null);
     localStorage.removeItem("currentUser");
+    setActivePage("store");
   }
 
   function renderPage() {
@@ -367,6 +377,10 @@ function App() {
           deleteProduct={deleteProduct}
         />
       );
+    }
+
+    if (activePage === "my-orders") {
+      return <MyOrdersPage currentUser={currentUser} />;
     }
 
     if (activePage === "orders" && isAdmin) {
@@ -464,6 +478,13 @@ function App() {
           {currentUser ? (
             <>
               <span className="user-chip">{currentUser.username}</span>
+
+              <button
+                className="nav-button"
+                onClick={() => openPage("my-orders")}
+              >
+                My Orders
+              </button>
 
               {isAdmin && (
                 <>
