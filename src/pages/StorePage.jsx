@@ -22,6 +22,9 @@ function StorePage({
     "Sneakers",
     "Clothing",
     "Accessories",
+    "Back to 2008",
+    "Rare drops",
+    "Archive pieces",
     "Vintage toys",
   ];
 
@@ -34,9 +37,9 @@ function StorePage({
       const query = searchValue.toLowerCase();
 
       return (
-        product.name.toLowerCase().includes(query) ||
-        product.description.toLowerCase().includes(query) ||
-        product.category.toLowerCase().includes(query)
+        product.name?.toLowerCase().includes(query) ||
+        product.description?.toLowerCase().includes(query) ||
+        product.category?.toLowerCase().includes(query)
       );
     })
     .sort((a, b) => {

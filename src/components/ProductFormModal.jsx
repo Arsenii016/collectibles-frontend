@@ -56,6 +56,10 @@ function ProductFormModal({
           <option value="Sneakers">Sneakers</option>
           <option value="Clothing">Clothing</option>
           <option value="Accessories">Accessories</option>
+
+          <option value="Back to 2008">Back to 2008</option>
+          <option value="Rare drops">Rare drops</option>
+          <option value="Archive pieces">Archive pieces</option>
           <option value="Vintage toys">Vintage toys</option>
         </select>
 
