@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=900&q=80";
+
 function CartModal({
   isOpen,
   onClose,
@@ -78,8 +81,11 @@ function CartModal({
                 <div className="cart-item fixed-cart-item" key={item.id}>
                   <img
                     className="cart-item-image"
-                    src={item.image_url}
+                    src={item.image_url || FALLBACK_IMAGE}
                     alt={item.name}
+                    onError={(event) => {
+                      event.currentTarget.src = FALLBACK_IMAGE;
+                    }}
                   />
 
                   <div className="cart-info">

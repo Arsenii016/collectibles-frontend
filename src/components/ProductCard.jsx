@@ -1,3 +1,6 @@
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=900&q=80";
+
 function ProductCard({
   product,
   addToCart,
@@ -8,12 +11,11 @@ function ProductCard({
   isAdmin,
   deleteProduct,
 }) {
+  const imageSrc = product.image_url || FALLBACK_IMAGE;
+
   return (
     <div className="card">
-      <div
-        className="card-image-wrap"
-        onClick={() => openProduct(product)}
-      >
+      <div className="card-image-wrap" onClick={() => openProduct(product)}>
         <button
           className={
             isFavorite(product.id)
@@ -29,29 +31,27 @@ function ProductCard({
           ♥
         </button>
 
-        <img src={product.image_url} alt={product.name} />
+        <img
+          src={imageSrc}
+          alt={product.name}
+          onError={(event) => {
+            event.currentTarget.src = FALLBACK_IMAGE;
+          }}
+        />
       </div>
 
       <div className="card-content">
         <div className="card-top">
-          <p className="item-label">
-            {product.category || "New"}
-          </p>
+          <p className="item-label">{product.category || "New"}</p>
         </div>
 
         <h3>{product.name}</h3>
 
-        <p className="description">
-          {product.description}
-        </p>
+        <p className="description">{product.description}</p>
 
-        <p className="price">
-          {product.price} ₽
-        </p>
+        <p className="price">{product.price} ₽</p>
 
-        <p className="seller">
-          Продавец: {product.seller || "Магазин"}
-        </p>
+        <p className="seller">Продавец: {product.seller || "Магазин"}</p>
 
         <div className="card-buttons">
           <button

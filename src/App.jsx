@@ -31,6 +31,8 @@ function App() {
   const [activePage, setActivePage] = useState("store");
   const [activeCategory, setActiveCategory] = useState("All items");
 
+  const [successOrder, setSuccessOrder] = useState(null);
+
   const [loginData, setLoginData] = useState({ email: "", password: "" });
 
   const [registerData, setRegisterData] = useState({
@@ -213,7 +215,11 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         if (data.order_id) {
-          alert(`Заказ №${data.order_id} оформлен 🚀`);
+          setSuccessOrder({
+            id: data.order_id,
+            total,
+          });
+
           setCartItems([]);
           setIsCartOpen(false);
           setActivePage("my-orders");
@@ -549,7 +555,61 @@ function App() {
         isFavorite={isFavorite}
       />
 
+      {successOrder && (
+        <div className="success-overlay" onClick={() => setSuccessOrder(null)}>
+          <div
+            className="success-modal"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="success-icon">✓</div>
+            <p className="section-kicker">Order placed</p>
+            <h2>Заказ №{successOrder.id} оформлен</h2>
+            <p>
+              Спасибо за заказ. Его статус можно отслеживать в разделе My
+              Orders.
+            </p>
+
+            <div className="success-total">
+              <span>Total</span>
+              <strong>{successOrder.total} ₽</strong>
+            </div>
+
+            <button
+              className="success-button"
+              onClick={() => {
+                setSuccessOrder(null);
+                openPage("my-orders");
+              }}
+            >
+              View my orders
+            </button>
+          </div>
+        </div>
+      )}
+
       {renderPage()}
+
+      <footer className="site-footer">
+        <div>
+          <h3>Collectibles</h3>
+          <p>
+            Curated marketplace for rare drops, archive pieces, sneakers,
+            clothing and nostalgic collectibles.
+          </p>
+        </div>
+
+        <div className="footer-links">
+          <button onClick={() => openPage("store")}>Store</button>
+          <button onClick={() => openPage("collections")}>Collections</button>
+          <button onClick={() => openPage("about")}>About</button>
+          <button onClick={() => setIsCartOpen(true)}>Cart</button>
+        </div>
+
+        <div className="footer-bottom">
+          <span>© 2026 Collectibles</span>
+          <span>Built as a fullstack marketplace project</span>
+        </div>
+      </footer>
     </div>
   );
 }
