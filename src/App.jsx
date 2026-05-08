@@ -459,55 +459,46 @@ function App() {
         </nav>
 
         <div className="nav-actions">
-          <button
-            className="favorite-button"
-            type="button"
-            onClick={() => openPage("favorites")}
-          >
-            Favorites
-            {favoriteCount > 0 && (
-              <span className="cart-count">{favoriteCount}</span>
-            )}
-          </button>
-
           <button className="cart-button" onClick={() => setIsCartOpen(true)}>
             Cart
             {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
           </button>
 
           {currentUser ? (
-            <>
-              <span className="user-chip">{currentUser.username}</span>
-
-              <button
-                className="nav-button"
-                onClick={() => openPage("my-orders")}
-              >
-                My Orders
+            <div className="account-menu">
+              <button className="account-button" type="button">
+                {currentUser.username} <span>⌄</span>
               </button>
 
-              {isAdmin && (
-                <>
-                  <button
-                    className="nav-button"
-                    onClick={() => openPage("orders")}
-                  >
-                    Orders
-                  </button>
+              <div className="account-dropdown">
+                <button onClick={() => openPage("my-orders")}>
+                  My Orders
+                </button>
 
-                  <button
-                    className="nav-button"
-                    onClick={() => setIsProductFormOpen(true)}
-                  >
-                    Admin
-                  </button>
-                </>
-              )}
+                <button onClick={() => openPage("favorites")}>
+                  Favorites
+                  {favoriteCount > 0 && (
+                    <span className="dropdown-count">{favoriteCount}</span>
+                  )}
+                </button>
 
-              <button className="logout-button" onClick={logout}>
-                Logout
-              </button>
-            </>
+                {isAdmin && (
+                  <>
+                    <button onClick={() => openPage("orders")}>
+                      Admin Orders
+                    </button>
+
+                    <button onClick={() => setIsProductFormOpen(true)}>
+                      Add Product
+                    </button>
+                  </>
+                )}
+
+                <button className="dropdown-logout" onClick={logout}>
+                  Logout
+                </button>
+              </div>
+            </div>
           ) : (
             <button className="nav-button" onClick={() => setIsAuthOpen(true)}>
               Login

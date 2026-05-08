@@ -1475,3 +1475,119 @@ button {
     flex-direction: column;
   }
 }
+.account-menu {
+  position: relative;
+}
+
+.account-button {
+  height: 46px;
+  min-width: 120px;
+  padding: 0 18px;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 10px 24px rgba(15, 23, 42, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  transition: 0.22s ease;
+}
+
+.account-button span {
+  margin-left: 6px;
+  color: #64748b;
+}
+
+.account-button:hover {
+  transform: translateY(-2px);
+  background: #ffffff;
+  border-color: rgba(0, 122, 255, 0.34);
+  box-shadow:
+    0 16px 34px rgba(15, 23, 42, 0.11),
+    0 0 0 5px rgba(0, 122, 255, 0.07);
+}
+
+.account-dropdown {
+  position: absolute;
+  top: 56px;
+  right: 0;
+  width: 220px;
+  padding: 10px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.16);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: 0.22s ease;
+  z-index: 80;
+}
+
+.account-menu:hover .account-dropdown {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.account-dropdown button {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 16px;
+  background: transparent;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.18s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.account-dropdown button:hover {
+  background: #f1f5f9;
+  color: #007aff;
+}
+
+.dropdown-count {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: #ff375f;
+  color: white;
+  font-size: 12px;
+  line-height: 22px;
+  text-align: center;
+}
+
+.dropdown-logout {
+  color: #ef4444 !important;
+}
+
+.dropdown-logout:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+}
+
+@media (max-width: 760px) {
+  .account-button {
+    height: 40px;
+    min-width: auto;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+
+  .account-dropdown {
+    right: 0;
+    width: 210px;
+  }
+}
